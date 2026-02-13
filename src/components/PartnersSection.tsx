@@ -30,7 +30,7 @@ const PartnersSection = () => (
             <img
               src={`https://logo.clearbit.com/${partner.domain}`}
               alt={partner.name}
-              className="h-12 w-auto object-contain mx-auto"
+              className="h-12 w-auto object-contain mx-auto bg-white"
               loading="lazy"
             />
           </div>
