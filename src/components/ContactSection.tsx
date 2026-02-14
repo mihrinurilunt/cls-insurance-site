@@ -7,8 +7,11 @@ import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useToast } from "@/hooks/use-toast";
 
+const FORMSPREE_ID = import.meta.env.VITE_FORMSPREE_ID;
+
 const ContactSection = () => {
   const { toast } = useToast();
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [form, setForm] = useState({ 
     name: "", 
     email: "", 
@@ -19,7 +22,7 @@ const ContactSection = () => {
   });
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const newErrors: { [key: string]: string } = {};
     
@@ -40,10 +43,52 @@ const ContactSection = () => {
     if (Object.keys(newErrors).length > 0) {
       return;
     }
-    
-    toast({ title: "Başarılı!", description: "Mesajınız alındı, en kısa sürede dönüş yapacağız." });
-    setForm({ name: "", email: "", phone: "", subject: "", message: "", updates: false });
-    setErrors({});
+
+    if (!FORMSPREE_ID) {
+      toast({
+        variant: "destructive",
+        title: "Yapılandırma Hatası",
+        description: "E-posta formu yapılandırılmamış. Lütfen VITE_FORMSPREE_ID ortam değişkenini ayarlayın.",
+      });
+      return;
+    }
+
+    setIsSubmitting(true);
+    try {
+      const response = await fetch(`https://formspree.io/f/${FORMSPREE_ID}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: form.name,
+          email: form.email,
+          phone: form.phone,
+          subject: form.subject,
+          message: form.message,
+          updates: form.updates,
+        }),
+      });
+
+      if (response.ok) {
+        toast({ title: "Başarılı!", description: "Mesajınız alındı, en kısa sürede dönüş yapacağız." });
+        setForm({ name: "", email: "", phone: "", subject: "", message: "", updates: false });
+        setErrors({});
+      } else {
+        const data = await response.json().catch(() => ({}));
+        toast({
+          variant: "destructive",
+          title: "Gönderim Hatası",
+          description: data.error || "Mesajınız gönderilemedi. Lütfen daha sonra tekrar deneyin.",
+        });
+      }
+    } catch {
+      toast({
+        variant: "destructive",
+        title: "Bağlantı Hatası",
+        description: "Mesaj gönderilemedi. İnternet bağlantınızı kontrol edip tekrar deneyin.",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -155,8 +200,12 @@ const ContactSection = () => {
               </div>
             </div>
             
-            <Button type="submit" className="w-full rounded-md bg-blue-600 hover:bg-blue-700 text-white">
-              Mesaj Gönder
+            <Button
+              type="submit"
+              disabled={isSubmitting}
+              className="w-full rounded-md bg-blue-600 hover:bg-blue-700 text-white disabled:opacity-70"
+            >
+              {isSubmitting ? "Gönderiliyor..." : "Mesaj Gönder"}
             </Button>
           </form>
 

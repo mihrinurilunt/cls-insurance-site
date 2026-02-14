@@ -16,7 +16,7 @@ const HeroSection = () => (
         Geleceğinizi Güvence Altına Alın
       </h1>
       <p className="text-lg md:text-xl text-primary-foreground/80 max-w-2xl mx-auto mb-10">
-        Çağdaş Lider Sigorta ile en uygun teklifleri karşılaştırın.
+        Çağdaş Lider Sigorta ile size en uygun sigorta teklifini belirleyelim.
       </p>
 
       <Button

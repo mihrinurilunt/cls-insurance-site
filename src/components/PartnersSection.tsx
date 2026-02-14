@@ -1,14 +1,14 @@
 const partners = [
-  { name: "Allianz", domain: "allianz.com.tr" },
-  { name: "AXA Sigorta", domain: "axasigorta.com.tr" },
-  { name: "Neova Sigorta", domain: "neovasigorta.com.tr" },
-  { name: "Quick Sigorta", domain: "quicksigorta.com" },
-  { name: "Sompo Sigorta", domain: "somposigorta.com.tr" },
-  { name: "HDI Sigorta", domain: "hdisigorta.com.tr" },
-  { name: "Ak Sigorta", domain: "aksigorta.com.tr" },
-  { name: "Ray Sigorta", domain: "raysigorta.com.tr" },
-  { name: "Hepiyi Sigorta", domain: "hepiyi.com.tr" },
-  { name: "AXA Hayat Emeklilik", domain: "axahayatemeklilik.com.tr" },
+  { name: "Allianz", logo: "allianz.png" },
+  { name: "AXA Sigorta", logo: "axa.png" },
+  { name: "Neova Sigorta", logo: "neova.png" },
+  { name: "Quick Sigorta", logo: "quick.png" },
+  { name: "Sompo Sigorta", logo: "sompo.png" },
+  { name: "HDI Sigorta", logo: "hdi.png" },
+  { name: "Ak Sigorta", logo: "ak.png" },
+  { name: "Ray Sigorta", logo: "ray.png" },
+  { name: "Hepiyi Sigorta", logo: "hepiyi.png" },
+  { name: "AXA Hayat Emeklilik", logo: "axahayatemeklilik.png" },
 ];
 
 const PartnersSection = () => (
@@ -21,16 +21,18 @@ const PartnersSection = () => (
         Türkiye'nin önde gelen sigorta şirketleriyle çalışıyoruz.
       </p>
 
-      <div className="mt-10 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6 md:gap-8">
-        {partners.map((partner) => (
+      <div className="mt-10 grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
+        {partners.map((partner, index) => (
           <div
             key={partner.name}
-            className="flex items-center justify-center h-24 rounded-xl bg-card border shadow-sm hover:shadow-md hover:-translate-y-1 transition duration-200 px-4"
+            className={`flex items-center justify-center min-h-20 rounded-xl bg-white border border-gray-200 shadow-sm hover:shadow-md transition-all duration-300 px-6 ${
+              index === 9 ? "md:col-start-2" : ""
+            }`}
           >
             <img
-              src={`https://logo.clearbit.com/${partner.domain}`}
+              src={`/logos/${partner.logo}`}
               alt={partner.name}
-              className="h-12 w-auto object-contain mx-auto bg-white"
+              className="h-20 w-full max-w-[180px] object-contain grayscale opacity-70 hover:grayscale-0 hover:opacity-100 transition-all duration-300"
               loading="lazy"
             />
           </div>
