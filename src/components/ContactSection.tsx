@@ -7,7 +7,7 @@ import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useToast } from "@/hooks/use-toast";
 
-const FORMSPREE_ID = import.meta.env.VITE_FORMSPREE_ID;
+const FORMSPREE_URL = "https://formspree.io/f/mojndeka";
 
 const ContactSection = () => {
   const { toast } = useToast();
@@ -44,28 +44,20 @@ const ContactSection = () => {
       return;
     }
 
-    if (!FORMSPREE_ID) {
-      toast({
-        variant: "destructive",
-        title: "Yapılandırma Hatası",
-        description: "E-posta formu yapılandırılmamış. Lütfen VITE_FORMSPREE_ID ortam değişkenini ayarlayın.",
-      });
-      return;
-    }
-
     setIsSubmitting(true);
     try {
-      const response = await fetch(`https://formspree.io/f/${FORMSPREE_ID}`, {
+      const formData = new FormData();
+      formData.append("name", form.name);
+      formData.append("email", form.email);
+      formData.append("phone", form.phone);
+      formData.append("subject", form.subject);
+      formData.append("message", form.message);
+      formData.append("updates", form.updates ? "Evet" : "Hayır");
+
+      const response = await fetch(FORMSPREE_URL, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          name: form.name,
-          email: form.email,
-          phone: form.phone,
-          subject: form.subject,
-          message: form.message,
-          updates: form.updates,
-        }),
+        body: formData,
+        headers: { Accept: "application/json" },
       });
 
       if (response.ok) {
@@ -73,18 +65,17 @@ const ContactSection = () => {
         setForm({ name: "", email: "", phone: "", subject: "", message: "", updates: false });
         setErrors({});
       } else {
-        const data = await response.json().catch(() => ({}));
         toast({
           variant: "destructive",
-          title: "Gönderim Hatası",
-          description: data.error || "Mesajınız gönderilemedi. Lütfen daha sonra tekrar deneyin.",
+          title: "Hata",
+          description: "Bir hata oluştu, lütfen tekrar deneyin.",
         });
       }
     } catch {
       toast({
         variant: "destructive",
-        title: "Bağlantı Hatası",
-        description: "Mesaj gönderilemedi. İnternet bağlantınızı kontrol edip tekrar deneyin.",
+        title: "Hata",
+        description: "Bir hata oluştu, lütfen tekrar deneyin.",
       });
     } finally {
       setIsSubmitting(false);
@@ -106,6 +97,7 @@ const ContactSection = () => {
               </Label>
               <Input
                 id="name"
+                name="name"
                 value={form.name}
                 onChange={(e) => {
                   setForm({ ...form, name: e.target.value });
@@ -123,6 +115,7 @@ const ContactSection = () => {
               <Label htmlFor="email">E-posta Adresi</Label>
               <Input
                 id="email"
+                name="email"
                 type="email"
                 value={form.email}
                 onChange={(e) => {
@@ -143,6 +136,7 @@ const ContactSection = () => {
               <Label htmlFor="phone">Telefon Numarası</Label>
               <Input
                 id="phone"
+                name="phone"
                 type="tel"
                 value={form.phone}
                 onChange={(e) => setForm({ ...form, phone: e.target.value })}
@@ -158,6 +152,7 @@ const ContactSection = () => {
               <Label htmlFor="subject">Konu</Label>
               <Input
                 id="subject"
+                name="subject"
                 value={form.subject}
                 onChange={(e) => setForm({ ...form, subject: e.target.value })}
                 placeholder="Kısa bir konu başlığı"
@@ -169,6 +164,7 @@ const ContactSection = () => {
               <Label htmlFor="message">Mesajınız</Label>
               <Textarea
                 id="message"
+                name="message"
                 value={form.message}
                 onChange={(e) => {
                   setForm({ ...form, message: e.target.value });
@@ -184,6 +180,7 @@ const ContactSection = () => {
             </div>
             
             <div className="flex items-start gap-3">
+              <input type="hidden" name="updates" value={form.updates ? "Evet" : "Hayır"} />
               <Checkbox
                 id="updates"
                 checked={form.updates}
@@ -192,7 +189,7 @@ const ContactSection = () => {
               />
               <div className="space-y-1">
                 <Label htmlFor="updates" className="cursor-pointer font-normal">
-                  Güncellemelerimizi almak isterim
+                  Güncellemelerinizi almak isterim
                 </Label>
                 <p className="text-xs text-muted-foreground">
                   Yeni kampanyalar ve duyurular için e-posta alabilirsiniz.
