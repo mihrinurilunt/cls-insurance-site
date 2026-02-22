@@ -5,6 +5,7 @@ import PartnersSection from "@/components/PartnersSection";
 import EmergencyBanner from "@/components/EmergencyBanner";
 import AboutSection from "@/components/AboutSection";
 import ContactSection from "@/components/ContactSection";
+import FAQSection from "@/components/FAQSection";
 import Footer from "@/components/Footer";
 import WhatsAppFAB from "@/components/WhatsAppFAB";
 
@@ -17,6 +18,7 @@ const Index = () => (
     <EmergencyBanner />
     <AboutSection />
     <ContactSection />
+    <FAQSection />
     <Footer />
     <WhatsAppFAB />
   </main>
