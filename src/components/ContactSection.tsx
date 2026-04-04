@@ -9,6 +9,11 @@ import { useToast } from "@/hooks/use-toast";
 
 const FORMSPREE_URL = "https://formspree.io/f/mojndeka";
 
+const COMPANY_ADDRESS =
+  "HASANPAŞA MAH. SÖĞÜTLÜÇEŞME CAD. ÇAĞDAŞ AP. NO:190 KAT:2 D:4, 34722 Kadıköy";
+const GOOGLE_MAPS_DIRECTIONS_URL = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(COMPANY_ADDRESS)}`;
+const GOOGLE_MAPS_EMBED_URL = `https://www.google.com/maps?q=${encodeURIComponent(COMPANY_ADDRESS)}&hl=tr&z=17&output=embed`;
+
 const ContactSection = () => {
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -208,22 +213,46 @@ const ContactSection = () => {
 
           {/* Info & Map */}
           <div className="space-y-6">
-            <div className="rounded-lg overflow-hidden h-48">
-              <iframe
-                title="Söğütlüçeşme Caddesi No:190, Kadıköy Haritası"
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3009.1234567890123!2d29.02101655!3d40.99000595!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNDDCsDU5JzI0LjAiTiAyOcKwMDEnMTUuNiJF!5e0!3m2!1str!2str!4v1700000000000!5m2!1str!2str"
-                width="100%"
-                height="100%"
-                style={{ border: 0 }}
-                loading="lazy"
-                referrerPolicy="no-referrer-when-downgrade"
-                allowFullScreen
-              ></iframe>
+            <div className="space-y-2">
+              <div className="relative rounded-lg overflow-hidden h-48 shadow-sm ring-1 ring-border/60">
+                <iframe
+                  title="Söğütlüçeşme Caddesi No:190, Kadıköy Haritası"
+                  src={GOOGLE_MAPS_EMBED_URL}
+                  width="100%"
+                  height="100%"
+                  className="pointer-events-none h-full w-full border-0"
+                  style={{ border: 0 }}
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                  allowFullScreen
+                />
+                <a
+                  href={GOOGLE_MAPS_DIRECTIONS_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="absolute inset-0 z-10 flex items-end justify-center bg-gradient-to-t from-black/35 via-transparent to-transparent pb-3 text-center text-xs font-medium text-white drop-shadow-md transition-opacity hover:from-black/45 focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 ring-offset-background"
+                  aria-label="Google Maps'te ofis konumunu aç ve yol tarifi al"
+                >
+                  <span className="rounded-full bg-black/50 px-3 py-1 backdrop-blur-sm">
+                    Google Maps'te aç — yol tarifi
+                  </span>
+                </a>
+              </div>
+              <p className="text-xs text-muted-foreground text-center">
+                Haritaya tıklayın; Google Maps kendi konumunuzdan ofise mesafe ve yol tarifini gösterir.
+              </p>
             </div>
             <div className="space-y-4 text-sm">
               <div className="flex items-start gap-3">
                 <MapPin className="h-5 w-5 text-accent mt-0.5 shrink-0" />
-                <span>HASANPAŞA MAH. SÖĞÜTLÜÇEŞME CAD. ÇAĞDAŞ AP. NO:190 KAT:2 D:4, 34722 Kadıköy/İstanbul</span>
+                <a
+                  href={GOOGLE_MAPS_DIRECTIONS_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-accent transition-colors underline-offset-2 hover:underline"
+                >
+                  {COMPANY_ADDRESS}
+                </a>
               </div>
               <div className="flex items-center gap-3">
                 <Phone className="h-5 w-5 text-accent shrink-0" />
