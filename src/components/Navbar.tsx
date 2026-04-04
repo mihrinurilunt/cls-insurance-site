@@ -7,6 +7,7 @@ const navLinks = [
   { label: "Anlaşmalı Firmalar", href: "#partnerler" },
   { label: "Hakkımızda", href: "#hakkimizda" },
   { label: "İletişim", href: "#iletisim" },
+  { label: "Sıkça Sorulan Sorular", href: "#sss" },
 ];
 
 const Navbar = () => {
