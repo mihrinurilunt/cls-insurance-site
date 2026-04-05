@@ -13,9 +13,12 @@ const HeroSection = () => (
 
     <div className="container mx-auto px-4 relative z-10 text-center">
       <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-primary-foreground leading-tight text-balance mb-6">
-        Geleceğinizi Güvence Altına Alın
+        Kadıköy Sigorta Acentesi
       </h1>
-      <p className="text-lg md:text-xl text-primary-foreground/80 max-w-2xl mx-auto mb-10">
+      <p className="text-lg md:text-xl text-primary-foreground/90 max-w-2xl mx-auto mb-4 font-medium">
+        Geleceğinizi Güvence Altına Alın
+      </p>
+      <p className="text-base md:text-lg text-primary-foreground/80 max-w-2xl mx-auto mb-10">
         Çağdaş Lider Sigorta ile size en uygun sigorta teklifini belirleyelim.
       </p>
 
